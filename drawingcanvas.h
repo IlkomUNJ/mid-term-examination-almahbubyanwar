@@ -11,6 +11,7 @@
 #include <QPixmap>
 #include "CustomMatrix.h"
 #include <QPair>
+#include <QColor>
 
 using namespace std;
 using Array3x3 = std::array<std::array<bool, 3>, 3>;

@@ -45,7 +45,8 @@ void DrawingCanvas::segmentDetection(){
             for(int m=-1;m<=1;m++){
                 for(int n=-1;n<=1;n++){
                     QRgb rgbValue = image.pixel(i+m, j+n);
-                    local_window[m+1][n+1] = (rgbValue != 0xffffffff);
+                    // local_window[m+1][n+1] = (rgbValue != 0xffffffff);
+                    local_window[m+1][n+1] = (rgbValue == 0xffff0000);
                 }
             }
 
@@ -82,7 +83,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
 
     if(isPaintLinesClicked){
         cout << "paint lines block is called" << endl;
-        pen.setColor(Qt::red);
+        pen.setColor(QColor(0xffff0000));
         pen.setWidth(1); // 1-pixel wide line
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
@@ -101,7 +102,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
         painter.setPen(pen);
     }
 
-    // Can be ignored (?)
+    // A personally proposed method (incomplete).
     if (detectIntersectSegments) {
         QPair<int,int> cellSize = QPair<int, int>(floor(WINDOW_WIDTH/detect_gridsize), floor(WINDOW_HEIGHT/detect_gridsize));
         // first, we draw the grids for clarity.
@@ -122,7 +123,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
         // second, we make vectors for point pairs that essentially create a line segment.
         QVector<QPair<QPoint&, QPoint&> > lineSegments;
         for (int i = 0; i < m_points.length() - 1; i = i + 2) {
-            // obviously, we don't consider 
+            // obviously, we cannot consider the lone point in odd-length m_points vector
             lineSegments.append(QPair<QPoint&, QPoint&>(m_points[i], m_points[i+1]));
             QPen segmentPen(Qt::darkGreen, 2);
             painter.setPen(segmentPen);
