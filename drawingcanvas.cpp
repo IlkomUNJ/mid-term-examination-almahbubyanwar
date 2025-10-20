@@ -58,8 +58,7 @@ void DrawingCanvas::segmentDetection(){
     return;
 }
 
-// As a sidenote, detectIntersectSegments is used when I was planning to consider my preferred implementation/method of
-// checking the line segments. It is unused for now. 
+// For an unused implementation of segmentDetection. 
 
 // void DrawingCanvas::segmentDetection() {
 //     // isPaintLinesClicked = true;
@@ -102,7 +101,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
         painter.setPen(pen);
     }
 
-    // A personally proposed method (incomplete).
+    // This part is unused.
     if (detectIntersectSegments) {
         QPair<int,int> cellSize = QPair<int, int>(floor(WINDOW_WIDTH/detect_gridsize), floor(WINDOW_HEIGHT/detect_gridsize));
         // first, we draw the grids for clarity.
