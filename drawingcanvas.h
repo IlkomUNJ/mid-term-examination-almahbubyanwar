@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <QPixmap>
 #include "CustomMatrix.h"
+#include <QPair>
 
 using namespace std;
 using Array3x3 = std::array<std::array<bool, 3>, 3>;
@@ -42,5 +43,7 @@ private:
     QVector<QPoint> m_points;
 
     bool isPaintLinesClicked = false;
+    bool detectIntersectSegments = false; // for now, this is not used for anything.
+    int detect_gridsize = 2; // this too.
 };
 #endif // DRAWINGCANVAS_H
