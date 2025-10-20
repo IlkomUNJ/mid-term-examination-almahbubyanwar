@@ -31,9 +31,10 @@ void DrawingCanvas::segmentDetection(){
     cout << "image width " << image.width() << endl;
     cout << "image height " << image.height() << endl;
 
-    //To not crash we set initial size of the matrix
+    // To not crash we set initial size of the matrix
 
-    vector<CustomMatrix> windows(image.width()*image.height());
+    vector<CustomMatrix> windows;
+    windows.reserve(image.width()*image.height());
 
     // Get the pixel value as an ARGB integer (QRgb is a typedef for unsigned int)
 
@@ -56,6 +57,9 @@ void DrawingCanvas::segmentDetection(){
     return;
 }
 
+// As a sidenote, detectIntersectSegments is used when I was planning to consider my preferred implementation/method of
+// checking the line segments. It is unused for now. 
+
 // void DrawingCanvas::segmentDetection() {
 //     // isPaintLinesClicked = true;
 //     detectIntersectSegments = true;
@@ -64,22 +68,22 @@ void DrawingCanvas::segmentDetection(){
 
 void DrawingCanvas::paintEvent(QPaintEvent *event){
     QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
+    // painter.setRenderHint(QPainter::Antialiasing);
 
     // Set up the pen and brush for drawing the points
-    QPen pen(Qt::blue, 5);
+    QPen pen(Qt::blue, 3);
     painter.setPen(pen);
     painter.setBrush(QBrush(Qt::blue));
 
     // Draw a small circle at each stored point
     for (const QPoint& point : std::as_const(m_points)) {
-        painter.drawEllipse(point, 3, 3);
+        painter.drawEllipse(point, 1, 1);
     }
 
     if(isPaintLinesClicked){
         cout << "paint lines block is called" << endl;
         pen.setColor(Qt::red);
-        pen.setWidth(4); // 4-pixel wide line
+        pen.setWidth(1); // 1-pixel wide line
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
 
@@ -97,6 +101,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
         painter.setPen(pen);
     }
 
+    // Can be ignored (?)
     if (detectIntersectSegments) {
         QPair<int,int> cellSize = QPair<int, int>(floor(WINDOW_WIDTH/detect_gridsize), floor(WINDOW_HEIGHT/detect_gridsize));
         // first, we draw the grids for clarity.
@@ -114,7 +119,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
             }
             grid.append(gridRow);
         };
-        // second, we make vectors for pointPairs that essentially create a line segment.
+        // second, we make vectors for point pairs that essentially create a line segment.
         QVector<QPair<QPoint&, QPoint&> > lineSegments;
         for (int i = 0; i < m_points.length() - 1; i = i + 2) {
             // obviously, we don't consider 
